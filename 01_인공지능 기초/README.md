@@ -13,4 +13,4 @@ tf.__version__
 https://drive.google.com/drive/folders/13JVO-1VYis_Hz762ydWI0HH-VyPBnD8l
 
 ### 설치 참고 사이트
-https://webnautes.tistory.com/1819
+https://sodayeong.tistory.com/227
