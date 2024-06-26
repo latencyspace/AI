@@ -1,7 +1,7 @@
 ### 01_인공지능 기초
 
 python -m pip install --upgrade pip  <br>
-pip3 install tensorflow==2.12.0 <br>
+pip3 install tensorflow==2.10.0 <br>
 
 
 import tensorflow as tf <br>
