@@ -1,45 +1,45 @@
-* ÅÙ¼­ÇÃ·Î GPU ¹öÀü ¼³Ä¡¹æ¹ı (ÀÛ¼ºÀÏ: 2024-06-27 ¸ñ¿äÀÏ )
+* í…ì„œí”Œë¡œ GPU ë²„ì „ ì„¤ì¹˜ë°©ë²• (ì‘ì„±ì¼: 2024-06-27 ëª©ìš”ì¼ )
 
 # RTX3060 12G:  Compute Capability 8.6, CUDA Core : 3584
 
 # https://developer.nvidia.com/CUDA-toolkit-Archive
 
-[ ¼³Ä¡ ¿ä¾à ]
-1. NVIDIA GPU (º»¹®¼­´Â GTX3060  12G /Windows 11À¸·Î Å×½ºÆ®ÇÔ )  
+[ ì„¤ì¹˜ ìš”ì•½ ]
+1. NVIDIA GPU (ë³¸ë¬¸ì„œëŠ” GTX3060  12G /Windows 11ìœ¼ë¡œ í…ŒìŠ¤íŠ¸í•¨ )  
 2. CUDA Toolkit 11.2  
 3. CuDNN 8.1.0
 4. Python 3.10 
 
 5. Tensorflow 2.10.0
-¼³Ä¡ ¹æ¹ı https://sodayeong.tistory.com/227
+ì„¤ì¹˜ ë°©ë²• https://sodayeong.tistory.com/227
 
-[ ¼³Ä¡ ¼ø¼­ ]
+[ ì„¤ì¹˜ ìˆœì„œ ]
 
- nvidia µå¶óÀÌ¹ö ¼³Ä¡ ÈÄ
+ nvidia ë“œë¼ì´ë²„ ì„¤ì¹˜ í›„
 
-1. CUDA Toolkit 11.2  ¹öÀü ¼³Ä¡ : https://developer.nvidia.com/cuda-11-2-0-download-archive ¿¡¼­
-cuda_11.2.0_460.89_win10.exe¸¦ ´Ù¿î ¹Ş¾Æ ½ÇÇà
+1. CUDA Toolkit 11.2  ë²„ì „ ì„¤ì¹˜ : https://developer.nvidia.com/cuda-11-2-0-download-archive ì—ì„œ
+cuda_11.2.0_460.89_win10.exeë¥¼ ë‹¤ìš´ ë°›ì•„ ì‹¤í–‰
 
-    À©µµ¿ì È¯°æº¯¼öÀÇ Path¿¡ ¾Æ·¡ ¼¼°³ Ãß°¡(»ı·«°¡´É, À§ ¼³Ä¡¹æ¹ı URL ÂüÁ¶,)
+    ìœˆë„ìš° í™˜ê²½ë³€ìˆ˜ì˜ Pathì— ì•„ë˜ ì„¸ê°œ ì¶”ê°€(ìƒëµê°€ëŠ¥, ìœ„ ì„¤ì¹˜ë°©ë²• URL ì°¸ì¡°,)
      C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\bin
      C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\libnvvp
      C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\extras\CUPTI\libx64 
 
-2. CuDNN 8.1.0 ¹öÀü ¼³Ä¡(NVIDIA °èÁ¤°¡ÀÔ ·Î±×ÀÎ ÇÊ¿ä) :  https://developer.nvidia.com/rdp/cudnn-download
-     cudnn-windows-x86_64-8.7.0.84_cuda11-archiveÀ» ´Ù¿î ¹Ş¾Æ ¾ĞÃàÇØÁ¦ÈÄ
-      C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\ ¾È¿¡ º¹»çÇØ ³Ö´Â´Ù(À§ ¼³Ä¡¹æ¹ı URL ÂüÁ¶)
+2. CuDNN 8.1.0 ë²„ì „ ì„¤ì¹˜(NVIDIA ê³„ì •ê°€ì… ë¡œê·¸ì¸ í•„ìš”) :  https://developer.nvidia.com/rdp/cudnn-download
+     cudnn-windows-x86_64-8.1.0.xx_cuda11-archiveì„ ë‹¤ìš´ ë°›ì•„ ì••ì¶•í•´ì œí›„
+      C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\ ì•ˆì— ë³µì‚¬í•´ ë„£ëŠ”ë‹¤(ìœ„ ì„¤ì¹˜ë°©ë²• URL ì°¸ì¡°)
    
-3. zlibwapi.dll Ãß°¡ ¼³Ä¡
-https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html#install-zlib-windows »çÀÌÆ® ÂüÁ¶
+3. zlibwapi.dll ì¶”ê°€ ì„¤ì¹˜(ë¶ˆí•„ìš”)
+https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html#install-zlib-windows ì‚¬ì´íŠ¸ ì°¸ì¡°
 
-http://www.winimage.com/zLibDll/zlib123dllx64.zip À» ´Ù¿î ¹Ş¾Æ ¾ĞÃàÇØÁ¦  ÈÄ
-zlibwapi.dll ÆÄÀÏÀ» C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\bin ¾È¿¡ º¹»çÇØ ³Ö´Â´Ù
+http://www.winimage.com/zLibDll/zlib123dllx64.zip ì„ ë‹¤ìš´ ë°›ì•„ ì••ì¶•í•´ì œ  í›„
+zlibwapi.dll íŒŒì¼ì„ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\bin ì•ˆì— ë³µì‚¬í•´ ë„£ëŠ”ë‹¤
 
 
-4. Anaconda ÅÙ¼­ÇÃ·Î ¼³Ä¡ °¡»ó È¯°æ ¸¸µé±â
-Anaconda Prompt¸¦ °ü¸®ÀÚ ±ÇÇÑÀ¸·Î ½ÇÇàÇÏ°í ¾Æ·¡ ¸í·ÉÀ» ½ÇÇàÇÑ´Ù
+4. Anaconda í…ì„œí”Œë¡œ ì„¤ì¹˜ ê°€ìƒ í™˜ê²½ ë§Œë“¤ê¸°
+Anaconda Promptë¥¼ ê´€ë¦¬ì ê¶Œí•œìœ¼ë¡œ ì‹¤í–‰í•˜ê³  ì•„ë˜ ëª…ë ¹ì„ ì‹¤í–‰í•œë‹¤
 
-conda create -n tf210gpu python=3.10 anaconda
+conda create -n tf210 python=3.10 anaconda
 conda activate tf210
 conda update pip
 pip3 install tensorflow==2.10.0
