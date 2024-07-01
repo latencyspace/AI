@@ -1,0 +1,36 @@
+* DNN(Deep Neural Net) 실습과제
+
+[1] Boston 주택 가격 회귀 예측 모델을 텐서플로로  3층 신경망을 구현하여 RMSE를 구하여 단층 신경망과 비교하여 보세요
+    단층일 때보다 RMSE가 낮아지도록 구현한다
+
+
+[2] Caesarian 제왕절개 Logistic Regression 모델을 텐서플로를 사용하여 3층으로신경망을 구현하여 Accuracy를 구하여 단층 신경망과 비교하여 보세요
+    단층일 때보다 정확도가 높아지도록 구현한다
+
+
+[힌트]  아래와 같이 구현하고 빈 칸을 완성하여 3층 신경망을 만든다
+
+------------------------------------------------------------------
+# Layer  1
+W1 = tf.Variable(tf.random.normal([_,_]), name='weight1')
+b1 = tf.Variable(tf.random.normal([_]), name='bias1')
+
+def layer1(X):
+    return  tf.nn.relu(tf.matmul(X,W1) + b1 )
+------------------------------------------------------------------
+# layer 2
+W2 = tf.Variable(tf.random.normal([_,_]), name='weight2')
+b2 = tf.Variable(tf.random.normal([_]), name='bias2')
+
+def layer2(X):
+    return  tf.nn.relu(tf.matmul(layer1(X),W2) + b2 )
+------------------------------------------------------------------
+# layer 3
+W3 = tf.Variable(tf.random.normal([_,_]), name='weight3')
+b3 = tf.Variable(tf.random.normal([_]), name='bias3')
+
+# hypothesis 예측 함수(방정식) : 활성화 함수 사용
+
+def hypothesis(X):
+    return  tf.___________(tf.matmul(layer2(X),W3) + b3)
+------------------------------------------------------------------
