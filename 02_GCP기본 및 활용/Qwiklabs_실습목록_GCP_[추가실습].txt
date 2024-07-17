@@ -12,3 +12,7 @@ Kubernetes의 Pod는 Kubernetes의 가장 작은 배포 가능한 컴퓨팅 유�
 
 (실습 종료후 Kubernetes Engine에 가서 클러스트 'bootcamp'를 삭제해준다) 의
 (Autopilot 클러스터를 만들어서 사용하기를 추천)
+
+
+[2] App Engine: Qwik Start - Python     : (App Engine 기본)
+https://www.cloudskillsboost.google/focuses/1014?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=33343095
