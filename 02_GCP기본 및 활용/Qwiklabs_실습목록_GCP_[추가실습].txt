@@ -1,0 +1,14 @@
+** Google Qwiklabs (Cloud Skills Boost) 추가 실습 목록
+
+[Course: Manage Kubernetes in Google Cloud]
+https://www.cloudskillsboost.google/course_templates/783?locale=en
+
+[1] Managing Deployments Using Kubernetes Engine  : (Kubernetes 기본)
+https://www.cloudskillsboost.google/course_templates/783/labs/408508?locale=ko
+
+(GCP계정에서 실습시 먼저 Kubernetes Engine API 를 enable 시켜줘야함)
+
+Kubernetes의 Pod는 Kubernetes의 가장 작은 배포 가능한 컴퓨팅 유닛이다. 하나 이상의 컨테이너(대부분의 경우 Docker 컨테이너)로 구성되며, 동일한 네트워크 네임스페이스, IP 주소, 포트 공간을 공유한다. Pod는 애플리케이션의 단일 인스턴스를 실행하는 데 필요한 리소스를 묶는 역할을 한다.
+
+(실습 종료후 Kubernetes Engine에 가서 클러스트 'bootcamp'를 삭제해준다) 의
+(Autopilot 클러스터를 만들어서 사용하기를 추천)
