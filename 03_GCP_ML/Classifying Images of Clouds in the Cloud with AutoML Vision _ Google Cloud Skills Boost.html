@@ -1,0 +1,690 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Classifying Images of Clouds in the Cloud with AutoML Vision | Google Cloud Skills Boost</title>
+<meta name="action-cable-url" content="/cable" />
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="google-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://www.googletagmanager.com/gtag/js?id=G-2X30ZRBDSG" async="async"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', "G-2X30ZRBDSG", {
+    user_id: "2331402"
+  });
+</script>
+<script>
+  const properties = JSON.parse(atob('eyJsb2NhbGUiOiJlbiIsInN1YnNjcmlwdGlvbiI6Im1vbnRobHkiLCJ1c2VyX3JvbGVzIjoic3R1ZGVudCIsImZlYXR1cmVfdGVhbXMiOnRydWUsImZlYXR1cmVfY29tbXVuaXR5X2ZvcnVtIjpmYWxzZSwiZmVhdHVyZV9hYl9jb250ZW50X2djcC1vbmRlbWFuZC1jb250ZW50L1QtR09PR0FWLUJ8cHJvamVjdC1zZWVraG8tcHVibGljLWNhdGFsb2d8MS4wfDEuMSI6ZmFsc2UsImZlYXR1cmVfYWxleGFuZHJpYV9zaG93X2J1bmRsZV9lcnJvcnMiOnRydWUsImZlYXR1cmVfdGVsbF9uYXZ5X2FsbG93ZWRfem9uZXMiOmZhbHNlLCJmZWF0dXJlX3Byb2dyYW1fbGVhcm5pbmdfYXNzaWdubWVudCI6dHJ1ZSwiZmVhdHVyZV9zZWFyY2hfdXBkYXRlcyI6ZmFsc2UsImZlYXR1cmVfcHJvZ3JhbV9ncm91cHMiOnRydWUsImZlYXR1cmVfcGVyZl90ZXN0Ijp0cnVlLCJmZWF0dXJlX3Nob3dfYW5udWFsX3B1cmNoYXNlX25vdyI6dHJ1ZSwiZmVhdHVyZV9pbHRfY29udGVudF9wcm9ncmFtIjpmYWxzZSwiZmVhdHVyZV9sb2dfY29va2llcyI6ZmFsc2UsImZlYXR1cmVfcHJvZ3JhbXMiOnRydWUsImZlYXR1cmVfcGVyc29uYWxpemVkX3F1ZXN0cyI6ZmFsc2UsImZlYXR1cmVfY291cnNlX3VwZ3JhZGUiOnRydWUsImZlYXR1cmVfY2Fub25pY2FsX2RvbWFpbl9yZWRpcmVjdCI6dHJ1ZSwiZmVhdHVyZV9lbmZvcmNlX2NvZGVidWlsZF92ZXJkaWN0cyI6dHJ1ZSwiZmVhdHVyZV9jb21wbGV0aW9uc19kYXNoYm9hcmQiOmZhbHNlLCJmZWF0dXJlX2NoYXRfb2ZmX2Zvcl9zaWduZWRfb3V0X3VzZXJzIjp0cnVlLCJmZWF0dXJlX3Byb2dyYW1fcmVzb3VyY2VzIjp0cnVlLCJmZWF0dXJlX29hdXRoX3Jpc2Nfc2h1dG9mZiI6dHJ1ZSwiZmVhdHVyZV91c2VkX2luIjp0cnVlLCJmZWF0dXJlX3BlZXJfYXNzaWdubWVudCI6dHJ1ZSwiZ3JvdXBfc3VhZG1pbnMiOmZhbHNlLCJncm91cF9ub25fc3VhZG1pbnMiOnRydWUsImdyb3VwX2FkbWlucyI6ZmFsc2UsImdyb3VwX3RyYWluZXJzIjpmYWxzZSwiZ3JvdXBfY29vcmRpbmF0b3JzIjpmYWxzZSwiZ3JvdXBfY3JlYXRvcnMiOmZhbHNlLCJncm91cF9zdHVkZW50cyI6dHJ1ZSwiZ3JvdXBfbm9uX29yZ2FuaXphdGlvbiI6dHJ1ZSwiZ3JvdXBfbm9uX3Byb2dyYW0iOnRydWV9'));
+  gtag('set', 'user_properties', properties);
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-78c5c5ce62b2a8a09722b63326e6c86d7ec6b6a3a2d0f448ea61308f9039d97a.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-491f21bbfd37e44e3964db919b5098773e19e6f5acbbbd402cf78fdb17551fc5.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+<script>
+  ql.perfTest.init();
+</script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="5lR7Nbmvaw623CztbLwA4PpX6svEIz2pCCfViISsIEmjRnr/h2EjDBrzgHc19QyI7iwnkHo7pPz5bxW8zBq++w==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:2331402,&quot;experimentIds&quot;:[&quot;teams&quot;,&quot;alexandria_show_bundle_errors&quot;,&quot;tell_navy_allowed_zones&quot;,&quot;program_learning_assignment&quot;,&quot;search_updates&quot;,&quot;program_groups&quot;,&quot;perf_test&quot;,&quot;show_annual_purchase_now&quot;,&quot;programs&quot;,&quot;course_upgrade&quot;,&quot;canonical_domain_redirect&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;chat_off_for_signed_out_users&quot;,&quot;program_resources&quot;,&quot;oauth_risc_shutoff&quot;,&quot;used_in&quot;,&quot;peer_assignment&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='Want to do ML on unstructured datasets like images? In this lab you will classify image datasets using pre-built ML models.' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Classifying Images of Clouds in the Cloud with AutoML Vision | Google Cloud Skills Boost' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='Want to do ML on unstructured datasets like images? In this lab you will classify image datasets using pre-built ML models.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://www.cloudskillsboost.google/course_sessions/429791/labs/102284" /><link href="https://www.cloudskillsboost.google/course_sessions/429791/labs/102284" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/X46FrQX4iLxHW5MxL8jICvgZM0evMEKscCeQO%2BazGdo%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-7de9c108e9c863f12eee4d2e2cedbb73062d8529785ea19da8f5ac162fd6d3cb.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav course-layout-body l-full no-nav  application-new course_sessions-labs course_sessions-labs-show lab-show l-full no-nav course-layout-body l-full no-nav  '>
+<ql-toolbar centered class='course-header'>
+<div class='course-header-navigation' role='navigation' slot='navigation'>
+<ul>
+<li>
+<ql-icon-button href='/course_templates/3' icon='home' label='Course home' tip='Home'></ql-icon-button>
+</li>
+<li>
+<ql-toggle-button class='course-side-toggle' data-analytics-action='Toggled course outline panel' data-analytics-category='Course' data-analytics-label='Google Cloud Big Data and Machine Learning Fundamentals' expandable for='course-outline-drawer' icon='list' id='toggle-outline' label='Toggle course outline' tip='Toggle course outline'></ql-toggle-button>
+</li>
+<li>
+<ql-icon-button href='/course_sessions/429791/video/102283' icon='arrow_back' label='Previous activity' tip='Previous activity'></ql-icon-button>
+</li>
+<li>
+<ql-icon-button href='/course_sessions/429791/video/102285' icon='arrow_forward' label='Next activity' tip='Next activity'></ql-icon-button>
+</li>
+<li>
+<ql-button icon='error' label='Upgrade available' onclick='document.querySelector(&quot;#course-session-upgrade-modal&quot;).open()' tip='Upgrade available'>
+Upgrade available
+</ql-button>
+</li>
+</ul>
+</div>
+<h1 class='ql-headline-6' slot='title'>
+Classifying Images of Clouds in the Cloud with AutoML Vision
+</h1>
+<div class='course-header-actions' slot='action'>
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='course' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:2331402},&quot;context&quot;:&quot;course&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost" height="24" aria-label="Google Cloud Skills Boost" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+<ql-drawer-container class='course-container'>
+<ql-drawer aria-labelledby='toggle-outline' id='course-outline-drawer' localStorageid='course-outline' slot='drawer' width='240'>
+<ql-course-outline activeActivityId='102284' modules='[{&quot;id&quot;:&quot;13642&quot;,&quot;title&quot;:&quot;Introduction to the Google Cloud Big Data and Machine Learning Fundamentals Course&quot;,&quot;description&quot;:&quot;Welcome to the Google Cloud Big Data and Machine Learning Fundamentals course. Here you will learn the basics of how the course is structured and the four main big data challenges you will solve for.&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;102148&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102221&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102221&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:350000,&quot;title&quot;:&quot;Welcome to Google Cloud Big Data and Machine Learning Fundamentals&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102149&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102222&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102222&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:221000,&quot;title&quot;:&quot;Introduction to Google Cloud&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102150&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102223&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102223&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:582000,&quot;title&quot;:&quot;Compute Power for Analytic and ML Workloads&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102151&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102224&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102224&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:839000,&quot;title&quot;:&quot;Demo: Creating a VM on Compute Engine&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102152&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102225&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102225&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:395000,&quot;title&quot;:&quot;Elastic Storage with Google Cloud Storage&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102153&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102226&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102226&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:200000,&quot;title&quot;:&quot;Build on Google&#39;s Global Network&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102154&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102227&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102227&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:176000,&quot;title&quot;:&quot;Security: On-premise vs Cloud-native&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102155&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102228&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102228&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:305000,&quot;title&quot;:&quot;Evolution of Google Cloud Big Data Tools&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102156&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102229&quot;,&quot;href&quot;:&quot;/course_sessions/429791/documents/102229&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Google Cloud Public Datasets program&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102157&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;102230&quot;,&quot;href&quot;:&quot;/course_sessions/429791/labs/102230&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:3600000,&quot;title&quot;:&quot;Exploring a BigQuery Public Dataset&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102158&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102231&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102231&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:353000,&quot;title&quot;:&quot;Choosing the right approach&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102159&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102232&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102232&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:222000,&quot;title&quot;:&quot;What you can do with Google Cloud&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102160&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102233&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102233&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:438000,&quot;title&quot;:&quot;Activity: Explore real customer solution architectures&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102161&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102234&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102234&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:415000,&quot;title&quot;:&quot;Key roles in a data-driven organization&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102162&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;102235&quot;,&quot;href&quot;:&quot;/course_sessions/429791/quizzes/102235&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102163&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102236&quot;,&quot;href&quot;:&quot;/course_sessions/429791/documents/102236&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Resources&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;13643&quot;,&quot;title&quot;:&quot;Recommending Products using Cloud SQL and Spark&quot;,&quot;description&quot;:&quot;In this module you will have an existing Apache SparkML recommendation model that is running on-premise. You will learn about recommendation models and how you can run them in the cloud with Dataproc and Cloud SQL.&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;102164&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102237&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102237&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:380000,&quot;title&quot;:&quot;How businesses use recommendation systems&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102165&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102238&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102238&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:353000,&quot;title&quot;:&quot;Introduction to machine learning&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102166&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102239&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102239&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:525000,&quot;title&quot;:&quot;Challenge: ML for recommending housing rentals&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102167&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102240&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102240&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:591000,&quot;title&quot;:&quot;Approach: Move from on-premise to Google Cloud&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102168&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102241&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102241&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:381000,&quot;title&quot;:&quot;Demo: From zero to an Apache Spark job in 10 minutes or less&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102169&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102242&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102242&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:366000,&quot;title&quot;:&quot;Challenge: Utilizing and tuning on-premise clusters&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102170&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102243&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102243&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:295000,&quot;title&quot;:&quot;Move storage off-cluster with Google Cloud Storage&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102171&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102244&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102244&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:128000,&quot;title&quot;:&quot;Lab Intro: Recommending Products Using Cloud SQL and Spark&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102172&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;102245&quot;,&quot;href&quot;:&quot;/course_sessions/429791/labs/102245&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:4800000,&quot;title&quot;:&quot;Recommending Products Using Cloud SQL and Spark&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102173&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;102246&quot;,&quot;href&quot;:&quot;/course_sessions/429791/quizzes/102246&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102174&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102247&quot;,&quot;href&quot;:&quot;/course_sessions/429791/documents/102247&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Resources&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;13644&quot;,&quot;title&quot;:&quot;Predict Visitor Purchases Using BigQuery ML&quot;,&quot;description&quot;:&quot;In this module, you will learn the foundations of BigQuery and big data analysis at scale. You will then learn how to build your own custom machine learning model to predict visitor purchases using just SQL with BigQuery ML.&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;102175&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102248&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102248&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:344000,&quot;title&quot;:&quot;Introduction to BigQuery&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102176&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102249&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102249&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:663000,&quot;title&quot;:&quot;Demo: Query 2 billion lines of Github code in less than 30 seconds&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102177&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102250&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102250&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:220000,&quot;title&quot;:&quot;BigQuery: Fast SQL Engine&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102178&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102251&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102251&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:699000,&quot;title&quot;:&quot;Demo: Exploring bike share data with SQL&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102179&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102252&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102252&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:276000,&quot;title&quot;:&quot;Data quality&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102180&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102253&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102253&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:316000,&quot;title&quot;:&quot;BigQuery managed storage&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102181&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102254&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102254&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:142000,&quot;title&quot;:&quot;Insights from geographic data&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102182&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102255&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102255&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:422000,&quot;title&quot;:&quot;Demo: Analyzing lightning strikes with BigQuery GIS&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102183&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102256&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102256&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:295000,&quot;title&quot;:&quot;Choosing a ML model type for structured data&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102184&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102257&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102257&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:318000,&quot;title&quot;:&quot;Predicting customer lifetime value&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102185&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102258&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102258&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:222000,&quot;title&quot;:&quot;BigQuery ML: Create models with SQL&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102186&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102259&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102259&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:153000,&quot;title&quot;:&quot;Phases in ML model lifecycle&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102187&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102260&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102260&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:325000,&quot;title&quot;:&quot;BigQuery ML: key features walkthrough&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102188&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102261&quot;,&quot;href&quot;:&quot;/course_sessions/429791/documents/102261&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Lab Intro: Predicting Visitor Purchases with a Classification Model with BigQuery ML&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102189&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;102262&quot;,&quot;href&quot;:&quot;/course_sessions/429791/labs/102262&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:4200000,&quot;title&quot;:&quot;Predicting Visitor Purchases with a Classification Model with BigQuery ML&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102190&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;102263&quot;,&quot;href&quot;:&quot;/course_sessions/429791/quizzes/102263&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102191&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102264&quot;,&quot;href&quot;:&quot;/course_sessions/429791/documents/102264&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Resources&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;13645&quot;,&quot;title&quot;:&quot;Real-time IoT Dashboards with Pub/Sub, Dataflow, and Data Studio&quot;,&quot;description&quot;:&quot;In this module you will engineer and build an auto-scaling streaming data pipeline to ingest, process, and visualize data on a dashboard. Before you build your pipeline you&#39;ll learn the foundations of message-oriented architecture and pitfalls to avoid when designing and implementing modern data pipelines.&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;102192&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102265&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102265&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:186000,&quot;title&quot;:&quot;Modern data pipeline challenges&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102193&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102266&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102266&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:371000,&quot;title&quot;:&quot;Message-oriented architectures with Pub/Sub&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102194&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102267&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102267&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:225000,&quot;title&quot;:&quot;Designing streaming pipelines with Apache Beam&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102195&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102268&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102268&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:192000,&quot;title&quot;:&quot;Implementing streaming pipelines on Dataflow&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102196&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102269&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102269&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:203000,&quot;title&quot;:&quot;Visualizing insights with Data Studio&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102197&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102270&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102270&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:163000,&quot;title&quot;:&quot;Creating charts with Data Studio&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102198&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102271&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102271&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:430000,&quot;title&quot;:&quot;Data Studio walkthrough&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102199&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102272&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102272&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:74000,&quot;title&quot;:&quot;Lab Intro: Creating a Streaming Data Pipeline for a Real-Time Dashboard with Dataflow&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102200&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;102273&quot;,&quot;href&quot;:&quot;/course_sessions/429791/labs/102273&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:3600000,&quot;title&quot;:&quot;Creating a Streaming Data Pipeline for a Real-Time Dashboard with Dataflow&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102201&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;102274&quot;,&quot;href&quot;:&quot;/course_sessions/429791/quizzes/102274&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102202&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102275&quot;,&quot;href&quot;:&quot;/course_sessions/429791/documents/102275&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Resources&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;13646&quot;,&quot;title&quot;:&quot;Deriving Insights from Unstructured Data using Machine Learning&quot;,&quot;description&quot;:&quot;Don&#39;t want to create a custom ML model from scratch? Learn how to leverage and extend pre-built ML models like the Vision API and AutoML for image classification.&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;102203&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102276&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102276&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:246000,&quot;title&quot;:&quot;Where is unstructured ML used in business?&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102204&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102277&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102277&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:198000,&quot;title&quot;:&quot;How does ML on unstructured data work?&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102205&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102278&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102278&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:97000,&quot;title&quot;:&quot;Demo: ML built into Google Photos&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102206&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102279&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102279&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:172000,&quot;title&quot;:&quot;Comparing approaches to ML&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102207&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102280&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102280&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:430000,&quot;title&quot;:&quot;Demo: Using ML building blocks&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102208&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102281&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102281&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:300000,&quot;title&quot;:&quot;Using pre-built AI to create a chatbot&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102209&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102282&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102282&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:435000,&quot;title&quot;:&quot;Customizing Pre-built models with AutoML&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102210&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102283&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102283&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:23000,&quot;title&quot;:&quot;Lab Intro: Classifying Images of Clouds in the Cloud with AutoML Vision&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102211&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;102284&quot;,&quot;href&quot;:&quot;/course_sessions/429791/labs/102284&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:9000000,&quot;title&quot;:&quot;Classifying Images of Clouds in the Cloud with AutoML Vision&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102212&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102285&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102285&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:78000,&quot;title&quot;:&quot;Building a Custom Model&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102213&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102286&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102286&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:1319000,&quot;title&quot;:&quot;Demo: Text classification done three ways&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102214&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102287&quot;,&quot;href&quot;:&quot;/course_sessions/429791/documents/102287&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Additional resources to build custom models&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102215&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;102288&quot;,&quot;href&quot;:&quot;/course_sessions/429791/quizzes/102288&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;102216&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102289&quot;,&quot;href&quot;:&quot;/course_sessions/429791/documents/102289&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Resources&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;13647&quot;,&quot;title&quot;:&quot;Summary&quot;,&quot;description&quot;:&quot;In this final module, we will review the key challenges, solutions, and topics covered as part of this fundamentals course. We will also review additional resources and the steps you can take to get certified as a Google Cloud Data Engineer. &quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;102217&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102290&quot;,&quot;href&quot;:&quot;/course_sessions/429791/video/102290&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:292000,&quot;title&quot;:&quot;Course Summary&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;13648&quot;,&quot;title&quot;:&quot;Course Resource&quot;,&quot;description&quot;:&quot;PDF links to all modules&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;102218&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;102291&quot;,&quot;href&quot;:&quot;/course_sessions/429791/documents/102291&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Course resources&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false}]'></ql-course-outline>
+</ql-drawer>
+<ql-drawer-content class='course-activity' slot='drawer-content'>
+
+
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Classifying Images of Clouds in the Cloud with AutoML Vision&quot;,&quot;lab_name&quot;:&quot;Classifying Images of Clouds in the Cloud with AutoML Vision&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;google-run&quot;}' data-credits='0.0' data-focus-id='33452711' data-lab-billing-limit='0.0' data-lab-duration='9000' data-parent='course_session' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:9000}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Classifying Images of Clouds in the Cloud with AutoML Vision
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>2 hours 30 minutes</span>
+<span>5 Credits</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/33452711/reviews?parent=course_session"><div class='rateit' data-rateit-readonly='true' data-rateit-value='3.9458'></div>
+
+</a><ql-button aria-label='Rate Lab' id='rate-lab-btn' label='Rate Lab' text></ql-button>
+</div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">Overview</h2>
+<p>In this lab, you upload images to Cloud Storage and use them to train a custom model to recognize different types of clouds (cumulus, cumulonimbus, etc.).</p>
+<h3><strong>What you learn</strong></h3>
+<p>In this lab, you learn how to perform the following tasks:</p>
+<ul>
+<li>
+<p>Upload a labeled dataset to Cloud Storage and connect it to AutoML Vision with a CSV label file</p>
+</li>
+<li>
+<p>Train a model with AutoML Vision and evaluate its accuracy</p>
+</li>
+<li>
+<p>Generate predictions on your trained model</p>
+</li>
+</ul>
+<h2 id="step2">Set up your environments</h2>
+<h3>Lab setup</h3>
+<p>For each lab, you get a new Google Cloud project and set of resources for a fixed time at no cost.</p>
+<ol>
+<li>
+<p>Sign in to Qwiklabs using an <strong>incognito window</strong>.</p>
+</li>
+<li>
+<p>Note the lab's access time (for example, <code>1:15:00</code>), and make sure you can finish within that time.<br>
+There is no pause feature. You can restart if needed, but you have to start at the beginning.</p>
+</li>
+<li>
+<p>When ready, click <strong>Start lab</strong>.</p>
+</li>
+<li>
+<p>Note your lab credentials (<strong>Username</strong> and <strong>Password</strong>). You will use them to sign in to the Google Cloud Console.</p>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Use another account</strong> and copy/paste credentials for <strong>this</strong> lab into the prompts.<br>
+If you use other credentials, you'll receive errors or <strong>incur charges</strong>.</p>
+</li>
+<li>
+<p>Accept the terms and skip the recovery resource page.</p>
+</li>
+</ol>
+<aside class="warning"><p><strong>Note:</strong> Do not click <strong>End Lab</strong> unless you have finished the lab or want to restart it. This clears your work and removes the project.
+  </p>
+</aside>
+<h2 id="step3">Task 1. Set up AutoML Vision</h2>
+<p>AutoML Vision provides an interface for all the steps in training an image classification model and generating predictions on it. Start by enabling the AutoML API.</p>
+<p>Open the navigation menu and and select <strong>APIs &amp; Services</strong> &gt; <strong>Library</strong>. In the search bar type in "Cloud AutoML API". Click on the <strong>Cloud AutoML API</strong> result and then click <strong>Enable</strong>.</p>
+<p>This may take a minute. You should now be on the following page (ensure that the Activation <strong>Status</strong> is <strong>Enabled</strong>):</p>
+<p><img alt="Cloud AutoML API result" src="https://cdn.qwiklabs.com/cdcetSmvdSFhzDjgTQOqd0%2F5SXolCUUIxSnos7RI%2B6U%3D"></p>
+<h3>Create a Cloud Storage bucket for your training data</h3>
+<ol>
+<li>On the GCP Console title bar, click <strong>Activate Cloud Shell</strong> (<img alt="Cloud_shell icon" src="https://cdn.qwiklabs.com/ep8HmqYGdD%2FkUncAAYpV47OYoHwC8%2Bg0WK%2F8sidHquE%3D">).</li>
+<li>When prompted, click <strong>Continue</strong>.</li>
+</ol>
+<p>In Cloud Shell, paste the below command to make a new bucket to hold your training. We use the magic variable <code>$DEVSHELL_PROJECT_ID</code>, which knows your current project, and simply add <code>-vcm</code> to the end.</p>
+<ol start="3">
+<li>Run the below command in Cloud Shell:</li>
+</ol>
+<ql-code-block language="plaintext">
+gsutil mb -p $DEVSHELL_PROJECT_ID \
+    -c regional    \
+    -l us-central1 \
+    gs://$DEVSHELL_PROJECT_ID-vcm/
+</ql-code-block>
+<p>Leave your Cloud Shell window open for additional steps to follow.</p>
+<ol start="4">
+<li>Click to open the <a href="https://console.cloud.google.com/vision/datasets" target="_blank">AutoML UI</a> ub a new browser tab .</li>
+</ol>
+<p>The AutoML Vision datasets page opens once the APIs are verified.</p>
+
+<h2 id="step4">Task 2. Upload training images to Cloud Storage</h2>
+<p>In order to train a model to classify images of clouds, you need to provide labeled training data so the model can develop an understanding of the image features associated with different types of clouds. In this example, your model will learn to classify three different types of clouds: cirrus, cumulus, and cumulonimbus. To use AutoML Vision you need to put your training images in Cloud Storage.</p>
+<ol>
+<li>In the Cloud Console, open the <strong>Navigation menu</strong> and select <strong>Cloud Storage</strong> &gt; <strong>Browser</strong>.</li>
+</ol>
+<p>Once there, you should see the bucket from the last step.</p>
+<ol start="2">
+<li>
+<p>The training images are publicly available in a Cloud Storage bucket. Use the <code>gsutil</code> command-line utility for Cloud Storage to copy the training images into your bucket:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gsutil -m cp -r gs://cloud-training/automl-lab-clouds/* gs://$DEVSHELL_PROJECT_ID-vcm/
+</ql-code-block>
+<ol start="3">
+<li>Once copying is complete you can view the CSV file and three types of clouds you have images for:</li>
+</ol>
+<ql-code-block language="plaintext">
+gsutil ls gs://$DEVSHELL_PROJECT_ID-vcm/
+</ql-code-block>
+<p><ql-multiple-select-probe answerindices="[0, 1, 2]" optiontitles='[
+"Cirrus",
+"Cumulonimbus",
+"Cumulus",
+"Stratus"
+]' shuffle="" stem="Which types of clouds do you have training data (images) for?">
+</ql-multiple-select-probe></p>
+<h3>Optional: View the images using the Cloud Storage Console UI</h3>
+<ol>
+<li>When the images finish copying, click the <strong>Refresh</strong> button at the top of the Cloud Storage browser.</li>
+<li>Then click on your bucket name.
+You should see a <code>data.csv</code> file and 3 folders of photos for each of the 3 different cloud types to be classified:</li>
+</ol>
+<p>If you click on the individual image files in each folder, and then click once more when you see the URL, you can see the photos you'll be using to train your model for each type of cloud.</p>
+<h2 id="step5">Task 3. Create an AutoML Vision training dataset</h2>
+<p>Now that your training data is in Cloud Storage, you need a way for AutoML Vision to access it. You'll create a CSV file where each row contains a URL to a training image and the associated label for that image. This CSV file has been created for you; you just need to update it with your bucket name.</p>
+<ol>
+<li>Run the following commands which:</li>
+</ol>
+<ul>
+<li>
+<p>Copy the template file to your Cloud Shell instance</p>
+</li>
+<li>
+<p>Update the CSV with the files in your project</p>
+</li>
+<li>
+<p>Upload this updated CSV file to your Cloud Storage bucket</p>
+</li>
+<li>
+<p>Show the bucket to confirm the data.csv file is present</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+gsutil cp gs://cloud-training/automl-lab-clouds/data.csv .
+head --lines=10 data.csv
+sed -i -e "s/placeholder/$DEVSHELL_PROJECT_ID-vcm/g" ./data.csv
+head --lines=10 data.csv
+gsutil cp ./data.csv gs://$DEVSHELL_PROJECT_ID-vcm/
+gsutil ls gs://$DEVSHELL_PROJECT_ID-vcm/
+</ql-code-block>
+<ol start="2">
+<li>View all the folders and files in your bucket you can add a wildcard to <code>gsutil ls</code> like so:</li>
+</ol>
+<ql-code-block language="plaintext">
+gsutil ls gs://$DEVSHELL_PROJECT_ID-vcm/*
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Highlight and copy the location of your data file to your clipboard which will look similar to:
+<code>gs://qwiklabs-gcp-your-project-id-will-be-here-vcm/data.csv</code></p>
+</li>
+<li>
+<p>Click to open the <a href="https://console.cloud.google.com/vision/datasets" target="_blank">AutoML Vision</a> datasets page.</p>
+</li>
+<li>
+<p>At the top of the Cloud Console, click <strong>+ New dataset</strong>.</p>
+</li>
+<li>
+<p>Type <strong>clouds</strong> for the dataset name.</p>
+</li>
+<li>
+<p>Leave <strong>Single-Label Classification</strong> checked.</p>
+</li>
+<li>
+<p>Click <strong>Create dataset</strong> to continue.</p>
+</li>
+</ol>
+<p><img alt="Create new dataset page" src="https://cdn.qwiklabs.com/kcW88jGJf8MImoDhmT94CogyHkcWM9WC%2BFVx3%2F%2Bt4Cg%3D"></p>
+<p>On the next screen you will choose the location of your training images (the ones you uploaded in the previous step).</p>
+<ol start="9">
+<li>Choose <strong>Select a CSV file on Cloud Storage</strong> and add the file name to the URL for the file that is in your clipboard from the previous step.  You may also use the browse function to find the csv file.  Once you see the white in green checkbox you may select <strong>Continue</strong> to proceed.</li>
+</ol>
+<p><img alt="Select a CSV file on Cloud Storage section" src="https://cdn.qwiklabs.com/kos32CKiB4D2YGyLvTlFy8AvENlU4f7fAHsd%2BegCkWY%3D"></p>
+<ol start="10">
+<li>
+<p>Once the import has completed click the <strong>Images</strong> tab to see the images in your dataset.</p>
+</li>
+</ol>
+<ul>
+<li>It will take 8 to 12 minutes while the image metadata is processed ("Running: Importing Images" will appear on the screen).</li>
+<li>Once complete, the images will appear by category.</li>
+</ul>
+
+<h2 id="step6">Task 4. Inspect the images</h2>
+<ol>
+<li>Next, proceed with a brief examination of the images.</li>
+</ol>
+<p><img alt="Images of clouds" src="https://cdn.qwiklabs.com/HQI8YiKTkZbC5AtkVWLK%2FlMIIGtGtn0lyWXC8CitmGc%3D"></p>
+<ol start="2">
+<li>Try filtering by different labels in the left menu (i.e. click cumulus) to review the training images.</li>
+</ol>
+<p><img alt="Filter menu" src="https://cdn.qwiklabs.com/JCLK1LJX2s8Ys6F1h%2BU8sk%2FfzbM7MHd6GqGvk3AWL9U%3D"></p>
+<ql-infobox>
+<strong>Note: </strong>If you were building a production model, you'd want <em>at least</em> 100 images per label to ensure high accuracy. This is just a demo so only 20 images of each type were used so the model could train quickly.
+</ql-infobox>
+<ol start="3">
+<li>If any images are labeled incorrectly you can click on them to switch the label or delete the image from your training set:</li>
+</ol>
+<p><img alt="Image details" src="https://cdn.qwiklabs.com/kHAeXRUT6rmAE9L40spHuXF65dCze2qExoLglLFGCpU%3D"></p>
+<ol start="4">
+<li>To see a summary of how many images you have for each label, click on <strong>Label stats</strong>. You should see the following pop-out box show up on the right side of your browser.</li>
+</ol>
+<p><img alt="Label Stats list" src="https://cdn.qwiklabs.com/8vN19tDLY5XwIefGRRQcb9odx%2BCf6tlhyxbk%2Bn5uBmE%3D"></p>
+<ol start="5">
+<li>Press <strong>Done</strong> after reviewing the list.</li>
+</ol>
+<ql-infobox><strong>Note: </strong>If you are working with a dataset that isn't already labeled, AutoML Vision provides an in-house human labeling service.
+</ql-infobox>
+<h2 id="step7">Task 5. Train your model</h2>
+<p>You're ready to start training your model! AutoML Vision handles this for you automatically, without requiring you to write any of the model code.</p>
+<ol>
+<li>To train your clouds model, go to the <strong>Train</strong> tab and click <strong>Start training</strong>.</li>
+</ol>
+<p><img alt="Train tabbed page" src="https://cdn.qwiklabs.com/i7vE%2FtFHV4FkAfcYCPGPMs45qJQuV87tkUJsPxFGaNc%3D"></p>
+<ol start="2">
+<li>
+<p>Enter a name for your model, or use the default auto-generated name.</p>
+</li>
+<li>
+<p>Leave <strong>Cloud hosted</strong> selected and click <strong>Continue</strong>.</p>
+</li>
+<li>
+<p>For the next step, type the value "<strong>8</strong>" into the <strong>Set your budget *</strong> box and check <strong>Deploy model to 1 node after training</strong>.  This process (auto-deploy) will make your model immediately available for predictions after testing is complete.</p>
+</li>
+<li>
+<p>Click <strong>Start training</strong>.</p>
+</li>
+</ol>
+<ql-infobox><strong>Note:</strong> Training this custom model can be expected to take over an hour to complete (<strong>55 to 90 minutes</strong> on average). The total training time includes node training time as well as infrastructure setup and tear down. <strong>To get full credit for the lab you do not need to wait for training to complete and can simply review the below screenshots from Evaluation and Prediction</strong>.</ql-infobox>
+<h2 id="step8">Task 6. Evaluate your model</h2>
+<ol>
+<li>After training is complete, select the <strong>Evaluate</strong> tab.  Here you'll see information about Precision and Recall of the model. It should resemble the following:</li>
+</ol>
+<p><img alt="Evaluate tabbed page" src="https://cdn.qwiklabs.com/hSTvxQGNOHApKgRpoIOy0XB8CnkrRxANkhbxYeruSGM%3D"></p>
+<ol start="2">
+<li>
+<p>You can also adjust the <strong>Confidence threshold</strong> slider to see its impact.</p>
+</li>
+<li>
+<p>Finally, scroll down to take a look at the <strong>Confusion matrix</strong>.</p>
+</li>
+</ol>
+<p><img alt="confusion matrix" src="https://cdn.qwiklabs.com/ykc%2B2wRfelH8KE2%2F1TyNIJDHz6DAq9SuBRqCT0XsDQA%3D"></p>
+<p>This tab provides some common machine learning metrics to evaluate your model accuracy and see where you can improve your training data. Since the focus for this lab was not on accuracy, move on to the next section about predictions. Feel free to browse the accuracy metrics on your own.</p>
+<h2 id="step9">Task 7. Generate predictions</h2>
+<p>Now it's time for the most important part: generating predictions on your trained model using data it hasn't seen before.</p>
+<p>There are a few ways to generate predictions. In this lab you use the UI to upload images. You'll see how your model does classifying these two images (the first is a cirrus cloud, the second is a cumulonimbus).</p>
+<ol>
+<li>First, download these images to your local machine by right-clicking on each of them (<strong>Note</strong>:  You may want to assign a simple name like 'Image1' and 'Image2' to assist with uploading later):</li>
+</ol>
+<p><img alt="Cirrus cloud" src="https://cdn.qwiklabs.com/N2psyplM3kFK9NEjjpak3CPIhh8IurY7Tn9vqzi4r8M%3D"></p>
+<p><img alt="Cumulonimbus cloud" src="https://cdn.qwiklabs.com/GZlBRmAKGzsDoT8yNRCh6VmxflxLEQEkiKPohYwja94%3D"></p>
+<ol start="2">
+<li>Navigate to the <strong>Test &amp; Use</strong> tab in the AutoML UI.</li>
+</ol>
+<p>On this page you will see that the model you just trained and deployed is listed in the <strong>Model</strong> pick list.</p>
+<ol start="3">
+<li>Click <strong>Upload images</strong> and upload the cloud sample images you just saved to your local disk (you can select both images at the same time).</li>
+</ol>
+<p><img alt="clouds Test and Use tabbed page" src="https://cdn.qwiklabs.com/Ir1KSf2Q7BRsmj6Hg4AcgyUE2PwNldl9HQ%2FStBqwJr4%3D"></p>
+<p>When the prediction request completes you should see something like the following:</p>
+<p><img alt="Predictions: 1 object: cirrus" src="https://cdn.qwiklabs.com/btq3FuO13W1gt3MdHgzlJO1mr11X5VzDQKj%2FdDosvoQ%3D"></p>
+<p><img alt="Predictions: 1 object: cumulonimbus" src="https://cdn.qwiklabs.com/HH5%2FheO%2BD08L8SAdzpHSumH9yDdAeYAv9dMk%2FHu4EtA%3D"></p>
+<p>Excellent - the model classified each type of cloud correctly!</p>
+
+<h2 id="step10">Congratulations!</h2>
+<p>You've learned how to train your own custom machine learning model and generate predictions on it through the web UI. Now you've got what it takes to train a model on your own image dataset.</p>
+<h3>What was covered</h3>
+<ul>
+<li>Uploading training images to Cloud Storage and creating a CSV for AutoML Vision to find these images.</li>
+<li>Reviewing labels and training a model in the AutoML Vision UI.</li>
+<li>Generating predictions on new cloud images.</li>
+</ul>
+<h2 id="step11">End your lab</h2>
+<p>When you have completed your lab, click <strong>End Lab</strong>. Google Cloud Skills Boost removes the resources you’ve used and cleans the account for you.</p>
+<p>You will be given an opportunity to rate the lab experience. Select the applicable number of stars, type a comment, and then click <strong>Submit</strong>.</p>
+<p>The number of stars indicates the following:</p>
+<ul>
+<li>1 star = Very dissatisfied</li>
+<li>2 stars = Dissatisfied</li>
+<li>3 stars = Neutral</li>
+<li>4 stars = Satisfied</li>
+<li>5 stars = Very satisfied</li>
+</ul>
+<p>You can close the dialog box if you don't want to provide feedback.</p>
+<p>For feedback, suggestions, or corrections, please use the <strong>Support</strong> tab.</p>
+<p>Copyright 2022 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">Overview</a></li><li><a href="#step2">Set up your environments</a></li><li><a href="#step3">Task 1. Set up AutoML Vision</a></li><li><a href="#step4">Task 2. Upload training images to Cloud Storage</a></li><li><a href="#step5">Task 3. Create an AutoML Vision training dataset</a></li><li><a href="#step6">Task 4. Inspect the images</a></li><li><a href="#step7">Task 5. Train your model</a></li><li><a href="#step8">Task 6. Evaluate your model</a></li><li><a href="#step9">Task 7. Generate predictions</a></li><li><a href="#step10">Congratulations!</a></li><li><a href="#step11">End your lab</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</ql-drawer-content>
+</ql-drawer-container>
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<ql-dialog headline='Score Details' icon='task_alt' id='jupyter-feedback-modal'>
+<iframe id='jupyter-feedback-frame' srcdoc='' title='Jupyter Feedback'></iframe>
+</ql-dialog>
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+Want to do ML on unstructured datasets like images? In this lab you will classify image datasets using pre-built ML models.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+150m access
+&middot;
+150m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://www.cloudskillsboost.google/catalog_lab/1797">https://www.cloudskillsboost.google/catalog_lab/1797</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="edit_lab_review_15836444" action="/lab_reviews/15836444" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="hidden" name="_method" value="patch" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='5' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='5' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="2331402" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="1797" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" value="2" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+<ql-dialog dismissalLabel='Cancel' headline='A newer version of this course is available. Your progress will carry over if you choose to upgrade. However, your completion percentage may change if the new version has added or removed any learning activities. Click the preview button to see the course changes before upgrading.' icon='error' id='course-session-upgrade-modal'>
+<ql-button href='/course_templates/3/preview' label='Preview' slot='action'>
+Preview
+</ql-button>
+</ql-dialog>
+
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.chat.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+
+
