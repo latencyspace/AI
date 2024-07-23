@@ -21,5 +21,5 @@ https://www.cloudskillsboost.google/focuses/1014?catalog_rank=%7B%22rank%22%3A1%
 
 [3] Automatically Deploy Python Web Apps from Version Control to Cloud Run   : (Cloud Run 기본)
 https://www.cloudskillsboost.google/focuses/80415?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=33521941
-
+(참고 :  https://cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-python-service?hl=ko)
 
