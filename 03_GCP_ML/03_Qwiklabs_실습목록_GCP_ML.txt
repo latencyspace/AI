@@ -69,7 +69,7 @@ https://www.cloudskillsboost.google/course_templates/129
 
 [11] Vertex Vizier Hyperparameter Tuning
     [Lab] : Vertex AI: Hyperparameter Tuning
-    https://www.cloudskillsboost.google/paths/17/course_templates/9/labs/433392
+    https://www.cloudskillsboost.google/course_templates/9/labs/495467
 
 [12] Vertex AI Pipelines
     [Lab] : Create and Run ML Pipelines with Vertex Pipelines
