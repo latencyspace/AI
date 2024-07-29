@@ -30,3 +30,4 @@ is not recommended.
 
 git cli 사용법 : https://covenant.tistory.com/206
 
+웹브라우저에서 https://hello-world-a4bzi6enla-uc.a.run.app 접근(주소는 각자 다름)
