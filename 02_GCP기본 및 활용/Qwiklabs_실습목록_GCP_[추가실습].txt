@@ -24,11 +24,8 @@ https://www.cloudskillsboost.google/focuses/80415?catalog_rank=%7B%22rank%22%3A1
 (참고 :  https://cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-python-service?hl=ko)
 
 Note:The lab works best if you have an existing GitHub account. If a new GitHub account is created for this lab, 
-<br>
 the account may be marked as spam by Cloud Build, and the Cloud Build app could show a 404 error after clicking on 
-<br>
 the Install CloudBuild App button on a new Github account. Creating a new GitHub account in order to run this lab 
-<br>
 is not recommended.
 
 git cli 사용법 : https://covenant.tistory.com/206
