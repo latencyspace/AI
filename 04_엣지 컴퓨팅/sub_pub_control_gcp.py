@@ -22,6 +22,18 @@ def pub_motor_off():
   mqttc.publish("icore-sdp/dc_motor", "off")  # 'hello/world'  "Hello World!"
   mqttc.loop(2) 
 
+def pub_led1_on():
+  print('pub_led1_on!!')
+  mqttc = mqtt.Client()
+  mqttc.connect("test.mosquitto.org", 1883)    # MQTT 
+  mqttc.publish("icore-sdp/led1", "on")
+
+def pub_led1_off():
+  print('pub_led1_off!!')
+  mqttc = mqtt.Client()
+  mqttc.connect("test.mosquitto.org", 1883)    # MQTT 
+  mqttc.publish("icore-sdp/led1", "off")
+
 def on_connect(client, userdata, flags,rc):
   print ("Connected with result code " + str(rc))
   client.subscribe("icore-sdp/temp_humi")
@@ -45,6 +57,10 @@ def on_message(client, userdata, msg):
      pub_motor_off()
       
 
+  if humi > 60.0:
+     pub_led1_on()
+  else:
+     pub_led1_off()
 client = mqtt.Client()        # MQTT Client 
 client.on_connect = on_connect     # on_connect callback 
 client.on_message = on_message     # on_message callback 
