@@ -38,7 +38,7 @@ def on_message(client, userdata, msg):
   timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
   print('time:',timestamp,'temp:',temp, 'humi:',humi)
 
-  if temp > 27.0:
+  if temp > 28.0:
      pub_buzzer_on()
      pub_motor_on()
   else:
