@@ -1,0 +1,28 @@
+[PI3 과제 실습 BigQuery 답안]
+------------------------------------
+SELECT *
+FROM `pi3_sensor.temp_humi`
+ORDER BY timestamp DESC
+LIMIT 10
+------------------------------------
+SELECT *
+FROM `pi3_sensor.temp_humi`
+WHERE temperature > 27;
+------------------------------------
+SELECT *
+FROM `pi3_sensor.temp_humi`
+WHERE humidity > 60;
+------------------------------------
+SELECT *
+FROM `pi3_sensor.temp_humi`
+ORDER BY temperature DESC
+LIMIT 1;
+------------------------------------
+SELECT *
+FROM `pi3_sensor.temp_humi`
+ORDER BY humidity DESC
+LIMIT 1;
+------------------------------------
+
+
+
