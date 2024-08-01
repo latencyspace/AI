@@ -1,0 +1,27 @@
+[PI3 GCP 연동 실습 과제]
+
+PI3에서 보내온 온/습도 센서 데이터를 GCP의 Compute Engine에서 
+수신하여 시간정보와 함께 BigQuery에 저장하는 파이썬 코드를 구현한다
+데이터셋 : pi3_sensor
+테이블 : temp_humi
+스키마 : timestamp/temperature/humidity
+
+<쿼리 실습>
+(1) 가장 최근 데이터 10개를 timestamp 포함 출력
+(2) 온도가 27도 보다 높은 행을 timestamp 포함 모두 출력
+(3) 습도가 60도 보다 높은 행을 timestamp 포함 모두 출력
+(4) 가장 높은 온도 출력 (timestamp 포함)
+(5) 가장 높은 습도 출력 (timestamp 포함)
+
+<제어 실습>
+수신된 온도가 27도 보다 높으면 경고용 부저음을 내고 
+DC Motor(냉방장치)를 구동시켜 온도를 낮춘다
+수신된 온도가 27도 보다 낮으면 DC Motor(냉방장치)를 끈다
+
+수신된 습도가 60보다 높으면 LED1번을 켠다
+수신된 습도가 60보다 낮으면 LED1번을 끈다
+
+
+<옵션>
+Compute Engine대신에 Cloud Run이나 App Engine으로도
+구현해본다
