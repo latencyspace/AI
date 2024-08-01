@@ -1,0 +1,116 @@
+[PI3 GCP 연동 실습 과제-2] : 데이터 파이프라인 구현
+
+아래 퀵랩에서 센서 simulation 부분을 PI3 보드로 대체한다
+--------------------------------------------------------------------------
+[13] Dataflow Streaming Features : (Course 04)  
+[Lab] : Streaming Data Processing: Streaming Data Pipelines   : (Dataflow / Pub/Sub / BigQuery 연동)
+https://www.cloudskillsboost.google/course_templates/52/labs/489479?locale=ko
+--------------------------------------------------------------------------
+
+아래 Java소스를  PI3센서 데이터에 맞게 수정한다
+https://github.com/GoogleCloudPlatform/training-data-analyst/blob/master/courses/streaming/process/sandiego/src/main/java/com/google/cloud/training/dataanalyst/sandiego/AverageSpeeds.java
+
+
+[Java 소스 를 파이선으로 변환한 소스]
+---------------------------------------------------------------------
+from __future__ import absolute_import
+
+import argparse
+import logging
+import re
+import time
+
+import apache_beam as beam
+from apache_beam.io import WriteToBigQuery
+from apache_beam.io.gcp.bigquery import BigQueryDisposition
+from apache_beam.io.gcp.pubsub import ReadFromPubSub
+from apache_beam.options.pipeline_options import PipelineOptions
+from apache_beam.options.pipeline_options import SetupOptions
+from apache_beam.transforms.window import SlidingWindows
+from datetime import datetime
+import json
+
+
+class ParseMessageFn(beam.DoFn):
+    def process(self, element):
+        line = element.decode('utf-8')
+        fields = line.split(',')
+        yield {
+            'timestamp': fields[0],
+            'latitude': float(fields[1]),
+            'longitude': float(fields[2]),
+            'highway': fields[3],
+            'direction': fields[4],
+            'lane': int(fields[5]),
+            'speed': float(fields[6]),
+            'sensorId': fields[7]
+        }
+
+
+class AddKeyFn(beam.DoFn):
+    def process(self, element):
+        key = element['sensorId']
+        yield (key, element['speed'])
+
+
+class FormatRowFn(beam.DoFn):
+    def process(self, element):
+        key, avg_speed = element
+        row = {
+            'timestamp': datetime.now().isoformat(),
+            'latitude': key.split(',')[1],
+            'longitude': key.split(',')[2],
+            'highway': key.split(',')[3],
+            'direction': key.split(',')[4],
+            'lane': int(key.split(',')[5]),
+            'speed': avg_speed,
+            'sensorId': key
+        }
+        yield row
+
+
+def run(argv=None):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--project', required=True, help='GCP Project ID')
+    parser.add_argument('--input_topic', required=True, help='Pub/Sub topic to read from')
+    parser.add_argument('--output_table', required=True, help='BigQuery table to write to')
+    parser.add_argument('--averaging_interval', type=float, default=60.0, help='Averaging interval in minutes')
+    parser.add_argument('--speedup_factor', type=float, default=1.0, help='Simulation speedup factor')
+    known_args, pipeline_args = parser.parse_known_args(argv)
+
+    pipeline_options = PipelineOptions(pipeline_args)
+    pipeline_options.view_as(SetupOptions).save_main_session = True
+
+    with beam.Pipeline(options=pipeline_options) as p:
+        averaging_interval = known_args.averaging_interval / known_args.speedup_factor * 60
+        averaging_frequency = averaging_interval / 2
+
+        messages = (
+            p
+            | 'ReadMessages' >> ReadFromPubSub(topic=known_args.input_topic)
+            | 'ParseMessages' >> beam.ParDo(ParseMessageFn())
+        )
+
+        avg_speeds = (
+            messages
+            | 'ApplyWindow' >> beam.WindowInto(SlidingWindows(averaging_interval, averaging_frequency))
+            | 'AddKeys' >> beam.ParDo(AddKeyFn())
+            | 'ComputeAverage' >> beam.CombinePerKey(beam.combiners.MeanCombineFn())
+        )
+
+        formatted_rows = (
+            avg_speeds
+            | 'FormatToTableRow' >> beam.ParDo(FormatRowFn())
+        )
+
+        formatted_rows | 'WriteToBigQuery' >> WriteToBigQuery(
+            known_args.output_table,
+            schema='timestamp:TIMESTAMP, latitude:FLOAT, longitude:FLOAT, highway:STRING, direction:STRING, lane:INTEGER, speed:FLOAT, sensorId:STRING',
+            write_disposition=BigQueryDisposition.WRITE_APPEND,
+            create_disposition=BigQueryDisposition.CREATE_IF_NEEDED
+        )
+
+
+if __name__ == '__main__':
+    logging.getLogger().setLevel(logging.INFO)
+    run()
