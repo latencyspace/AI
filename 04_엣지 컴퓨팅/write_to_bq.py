@@ -22,7 +22,7 @@ dataframe = pd.DataFrame(data, columns=["timestamp", "temperature", "humidity"])
 # Load the data into a new table.
 job_config = bigquery.LoadJobConfig(
     schema=schema,
-    write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,   # 기존 데이터를 삭제하고 덮어쓰기
+    write_disposition=bigquery.WriteDisposition.WRITE_APPEND)
 job = client.load_table_from_dataframe(dataframe, table_id, job_config=job_config)
 
 job.result()  # Wait for the job to complete.
